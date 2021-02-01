@@ -1,18 +1,12 @@
 /* -------------------------------------------- Precount Program --------------------------------------------- */
 void CALL_TIMER(int CALL_REMAIN){
-  LCD.clear();
-  // LCD show call time
-  LCD.setCursor(0, 0);
-  LCD.print(" CALL TIME");
 
-  // Show AB/CD stage on LCD
+  // Show AB/CD stage
   if(AB_STAGE == true){
-    LCD.setCursor(18, 0);
-  LCD.print("AB");
+  MAIN_DISPLAY.setChar(0, 4, 'a', false);
     }
     else{
-      LCD.setCursor(18, 0);
-  LCD.print("CD");
+  MAIN_DISPLAY.setChar(0, 4, 'b', false);
     }
     
   // Counter program
@@ -36,11 +30,6 @@ void CALL_TIMER(int CALL_REMAIN){
       }
 
       TIMER_DISPLAY(CALL_REMAIN);
-      /*
-      if(CALL_REMAIN == 10 || 5 || 4 || 3 || 2 || 1){
-        BUZZER_ONLY(1, 0);
-      }
-      */
     }         // End if(millis() - CURRENT_TIME >= HALF_SECOND)
     
   }         // End while(CALL_REMAIN > 0)
@@ -55,11 +44,8 @@ void CALL_TIMER(int CALL_REMAIN){
 
 /* ---------------------------------------------- Count Program ---------------------------------------------- */
 void SHOOTING_TIMER(int SHOOTING_REMAIN){
-  LCD.clear();
   // AB/CD Light up
   AB_DISPLAY();
-  LCD.setCursor(0, 0);
-  LCD.print(" SHOOTING TIME");
 
   // Counter program
   while(SHOOTING_REMAIN > 0){
@@ -87,7 +73,5 @@ void SHOOTING_TIMER(int SHOOTING_REMAIN){
       RUN_STAGE = false;
       AB_STAGE = !AB_STAGE;
       BUZZER_HORN(3, 0); 
-      LCD.clear();
     }
-    
 }         // End SHOOTING_TIMER(int SHOOTING_REMAIN)
