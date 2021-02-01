@@ -1,7 +1,7 @@
 /**************************************************************************************************************
  *                                                ARCHERY TIMER                                               *
  *  SOFTWARE VERSION 1.0                                                                                      *
- *  RELEASE : 15 DECEMBER 2020                                                                                *
+ *  RELEASE : JANUARY 2021                                                                                    *
  *                                                                                                            *
  *  DEVELOP BY FITROX ELECTRONICS :: CHIANG MAI, THAILAND                                                     *
  *  PROGRAMMER                                                                                                *
@@ -11,7 +11,6 @@
 /* ----------------------------------------- Include Library & Other ---------------------------------------- */
 #include <EEPROM.h>
 #include <LedControl.h>
-#include <LiquidCrystal_I2C.h>
 
 /* -------------------------------------------- I/O Configulation -------------------------------------------- */
 #define BATTERY_VOLTAGE A0                      // *INPUT - Read battery voltage
@@ -41,8 +40,6 @@
 // MAX7219 drive 4-digit 7-segment Main display
 #define MAX_NO 1                                // Use 1 MAX7219
 LedControl MAIN_DISPLAY = LedControl(MAX_DIN, MAX_CLOCK, MAX_LOAD, MAX_NO);
-// LCD Display
-LiquidCrystal_I2C LCD(0x27, 20, 4);
 
 /* ---------------------------------------------- Program Stage ---------------------------------------------- */
 bool RUN_STAGE = false;                         // Stage to start/pause/resume program
@@ -79,8 +76,7 @@ void setup() {
   // Initialization devices
   Serial.begin(9600);
   MAIN_DISPLAY.shutdown(0, false);
-  MAIN_DISPLAY.setIntensity(0, 15);
-  LCD.begin();
+  MAIN_DISPLAY.setIntensity(0, 8);
 
   // INPUT pins
   pinMode(START_BUTTON, INPUT);
@@ -129,10 +125,10 @@ void loop() {
 
 
   if (RUN_STAGE == false) {
-    LCD.setCursor(0, 0);
-    LCD.print("       READY        ");
-    LCD.setCursor(0, 1);
-    LCD.print(" Press START Button  ");
+  MAIN_DISPLAY.setChar(0, 0, '-', false);
+  MAIN_DISPLAY.setChar(0, 1, '-', false);
+  MAIN_DISPLAY.setChar(0, 3, '-', false);
+  MAIN_DISPLAY.setChar(0, 4, '-', false);
   }
 
 
