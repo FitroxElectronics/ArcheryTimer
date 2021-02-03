@@ -19,7 +19,7 @@ void TIMER_DISPLAY(int TIME_REMAIN) {
   if (COLON == true) {
     MAIN_DISPLAY.setDigit(0, 2, 8, true);
     COLON = false;
-  } 
+  }
   else {
     MAIN_DISPLAY.setDigit(0, 2, 8, false);
     COLON = true;
