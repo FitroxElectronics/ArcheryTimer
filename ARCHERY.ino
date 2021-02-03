@@ -1,11 +1,11 @@
 /**************************************************************************************************************
- *                                                ARCHERY TIMER                                               *
- *  SOFTWARE VERSION 1.0                                                                                      *
- *  RELEASE : JANUARY 2021                                                                                    *
+                                                  ARCHERY TIMER
+    SOFTWARE VERSION 1.0
+    RELEASE : JANUARY 2021
  *                                                                                                            *
- *  DEVELOP BY FITROX ELECTRONICS :: CHIANG MAI, THAILAND                                                     *
- *  PROGRAMMER                                                                                                *
- *   - P. BANGTAWEE                                                                                           *
+    DEVELOP BY FITROX ELECTRONICS :: CHIANG MAI, THAILAND
+    PROGRAMMER
+     - P. BANGTAWEE
  **************************************************************************************************************/
 
 /* ----------------------------------------- Include Library & Other ---------------------------------------- */
@@ -34,7 +34,7 @@
 
 /* ---------------------------------------------- EEPROM Address --------------------------------------------- */
 #define CALLTIME_ADDR 10
-#define SHOOTINGTIME_ADDR 12
+#define SHOOTINGTIME_ADDR 15
 
 /* ------------------------------------------ Device Configulation ------------------------------------------- */
 // MAX7219 drive 4-digit 7-segment Main display
@@ -95,11 +95,11 @@ void setup() {
   pinMode(DEVICE_INDICATOR, OUTPUT);
 
   // Set all OUTPUT 'OFF'
-  digitalWrite(BUZZER, LOW);
-  digitalWrite(HORN, LOW);
-  digitalWrite(RED_LIGHT, LOW);
-  digitalWrite(YELLOW_LIGHT, LOW);
-  digitalWrite(GREEN_LIGHT, LOW);
+  digitalWrite(BUZZER, LOW);                    // Active HIGH
+  digitalWrite(HORN, HIGH);                     // Active LOW
+  digitalWrite(RED_LIGHT, HIGH);                // Active LOW
+  digitalWrite(YELLOW_LIGHT, HIGH);             // Active LOW
+  digitalWrite(GREEN_LIGHT, HIGH);              // Active LOW
   digitalWrite(AB_LIGHT, LOW);
   digitalWrite(CD_LIGHT, LOW);
   digitalWrite(BATTERY_INDICATOR, LOW);
@@ -108,14 +108,14 @@ void setup() {
   CALL_TIME = EEPROM.read(CALLTIME_ADDR);
   SHOOTING_TIME = EEPROM.read(SHOOTINGTIME_ADDR);
   SET_PROG();
-  
+
 }         // End setup
 
 /* ------------------------------------------------ Main Loop ------------------------------------------------ */
 void loop() {
-  digitalWrite(RED_LIGHT, HIGH);
-  digitalWrite(YELLOW_LIGHT, LOW);
-  digitalWrite(GREEN_LIGHT, LOW);
+  digitalWrite(RED_LIGHT, LOW);
+  digitalWrite(YELLOW_LIGHT, HIGH);
+  digitalWrite(GREEN_LIGHT, HIGH);
 
 
   if (digitalRead(START_BUTTON) == HIGH) {
@@ -125,27 +125,34 @@ void loop() {
 
 
   if (RUN_STAGE == false) {
-  MAIN_DISPLAY.setChar(0, 0, '-', false);
-  MAIN_DISPLAY.setChar(0, 1, '-', false);
-  MAIN_DISPLAY.setChar(0, 3, '-', false);
-  MAIN_DISPLAY.setChar(0, 4, '-', false);
+    MAIN_DISPLAY.setChar(0, 0, '-', false);
+    MAIN_DISPLAY.setChar(0, 1, '-', false);
+    MAIN_DISPLAY.setChar(0, 3, '-', false);
+    MAIN_DISPLAY.setChar(0, 4, '-', false);
   }
 
 
   if (RUN_STAGE == true) {
-    
+    digitalWrite(RED_LIGHT, LOW);
+    digitalWrite(YELLOW_LIGHT, LOW);
+    digitalWrite(GREEN_LIGHT, LOW);
+    delay(500);
+    digitalWrite(RED_LIGHT, HIGH);
+    digitalWrite(YELLOW_LIGHT, HIGH);
+    digitalWrite(GREEN_LIGHT, HIGH);
+
     LAST_BLINK = millis();
     // Buzzer 2 time & YELLOW Light to CALL signal
     BUZZER_HORN(2, 0);
-    digitalWrite(RED_LIGHT, LOW);
-    digitalWrite(YELLOW_LIGHT, HIGH);
+    digitalWrite(RED_LIGHT, HIGH);
+    digitalWrite(YELLOW_LIGHT, LOW);
     // Start CALL TIME program
     CALL_TIMER(CALL_TIME);
 
     // Set HALF_COUNT = 0 and start SHOOTING TIME program
     HALF_COUNT = 0;
     SHOOTING_TIMER(SHOOTING_TIME);
-    
+
   }         // End if(RUN_STAGE == true)
 
 }         // End main loop
